@@ -1,0 +1,20 @@
+# Ignored files and directories
+
+# JavaScript build directory
+js/dist/
+
+# Node.js modules
+js/node_modules/
+
+# PHP Composer
+php/composer.phar
+php/vendor/
+php/tmp/
+php/logs/
+
+# Ignore JavaScript files with specific content
+timeout = null.js
+
+# Ignore all ZIP files
+**/*.zip
+# *.zip

@@ -1,0 +1,13 @@
+{
+    "require": {
+        "anton-shevchuk/jquery-php": "^1.0",
+        "querypath/querypath": "^3.0",
+        "thiagoalessio/tesseract_ocr": "^2.13",
+        "phpmailer/phpmailer": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "classes\\": "classes/"
+        }
+    }
+}

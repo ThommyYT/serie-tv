@@ -1,0 +1,150 @@
+<div class="container wrapper">
+    <div class="col-12">
+        <div class="card bg-dark border-0 shadow-sm">
+            <div class="card-body text-center">
+
+                <!-- HEADER -->
+                <h5 class="text-light mb-1">
+                    Benvenuto, <span id="full_name"></span>
+                </h5>
+
+                <p class="text-secondary small mb-4">
+                    Gestisci il tuo account
+                </p>
+
+                <!-- ACCORDION -->
+                <div class="accordion accordion-flush" id="accountAccordion">
+
+                    <!-- SETTINGS -->
+                    <div class="accordion-item bg-dark border-0">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-dark text-light" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#settingsPanel">
+                                Impostazioni
+                            </button>
+                        </h2>
+
+                        <div id="settingsPanel" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
+
+                            <div class="accordion-body text-start">
+
+                                <div class="form-floating mb-2">
+                                    <input type="text" id="name" class="form-control" placeholder="Nome">
+                                    <label for="name">Nome</label>
+                                </div>
+
+                                <div class="input-group mb-2">
+                                    <div class="form-floating">
+                                        <input type="email" id="email" class="form-control"
+                                            placeholder="Email">
+                                        <label for="email">Email</label>
+                                    </div>
+                                    <button type="button" id="verifyEmailBtn" class="btn btn-outline-info bg-gradient ms-2">
+                                        <i class="bi"> Verifica email</i>
+                                    </button>
+                                </div>
+
+
+                                <!-- button save settings -->
+
+                                <button id="saveSettingsBtn" class="btn btn-success bg-gradient">
+                                    Salva impostazioni
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SICUREZZA -->
+                    <div class="accordion-item bg-dark border-0">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-dark text-light" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#securityPanel">
+                                Sicurezza
+                            </button>
+                        </h2>
+
+                        <div id="securityPanel" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
+
+                            <div class="accordion-body text-start">
+                                <div class="input-group mb-2 has-validation">
+                                    <div class="form-floating">
+                                        <input type="password" id="newPassword" class="form-control"
+                                            placeholder="Nuova password">
+                                        <label for="newPassword">Nuova password</label>
+                                    </div>
+                                    <span class="input-group-text bg-dark border-start-0" id="togglePasswordN"
+                                        style="cursor: pointer;">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </span>
+                                </div>
+
+                                <div class="p-3 mb-2 border">
+                                    <div class="d-flex flex-column gap-2">
+                                        <div id="len" class="small text-danger d-flex align-items-center gap-2">
+                                            <i class="bi bi-x-circle-fill"></i> Almeno 8 caratteri
+                                        </div>
+                                        <div id="cap" class="small text-danger d-flex align-items-center gap-2">
+                                            <i class="bi bi-x-circle-fill"></i> Una lettera maiuscola
+                                        </div>
+                                        <div id="num" class="small text-danger d-flex align-items-center gap-2">
+                                            <i class="bi bi-x-circle-fill"></i> Almeno un numero
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <button id="changePasswordBtn" class="btn btn-success bg-gradient">
+                                    Cambia password
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- data di ultimo login, data di registrazione e data di ultima modifica -->
+
+                    <div class="accordion-item bg-dark border-0">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed bg-dark text-light" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#infoPanel">
+                                Informazioni
+                            </button>
+                        </h2>
+
+                        <div id="infoPanel" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
+
+                            <div class="accordion-body text-start">
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" readonly id="registrationDate"
+                                        placeholder="Data di registrazione"></input>
+                                    <label class="form-label" for="registrationDate">Data di registrazione</label>
+                                </div>
+
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" readonly id="lastLoginDate"
+                                        placeholder="Data di ultimo login"></input>
+                                    <label class="form-label" for="lastLoginDate">Data di ultimo login</label>
+                                </div>
+
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control" readonly id="lastModifiedDate"
+                                        placeholder="Data di ultima modifica"></input>
+                                    <label class="form-label" for="lastModifiedDate">Data di ultima modifica</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="mt-3">
+
+                    <button id="deleteBtn" class="btn btn-danger bg-gradient">
+                        Elimina account
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

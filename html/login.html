@@ -1,0 +1,64 @@
+<div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-4 shadow border-0">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h1 class="fw-bold mb-0 fs-2" id="modalLoginTitle">Accedi</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+            </div>
+
+            <div class="modal-body p-5 pt-0">
+                <form id="loginForm">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control rounded-3" id="loginEmail" placeholder="nome@esempio.it"
+                            required>
+                        <label for="loginEmail">Indirizzo email</label>
+                    </div>
+                    <div class="input-group mb-3 has-validation">
+                        <div class="form-floating">
+                            <input type="password" class="form-control rounded-start-3" id="loginPassword"
+                                placeholder="Password" required>
+                            <label for="loginPassword">Password</label>
+                        </div>
+                        <span class="input-group-text border-start-0 rounded-end-3 bg-dark" id="togglePasswordL" style="cursor: pointer;">
+                            <i class="bi bi-eye-fill"></i>
+                        </span>
+                    </div>
+                    
+                    <div class="p-3 mb-4 rounded-3 border">
+                        <div class="d-flex flex-column gap-2">
+                            <div id="len" class="small text-danger d-flex align-items-center gap-2">
+                                <i class="bi bi-x-circle-fill"></i> Almeno 8 caratteri
+                            </div>
+                            <div id="cap" class="small text-danger d-flex align-items-center gap-2">
+                                <i class="bi bi-x-circle-fill"></i> Una lettera maiuscola
+                            </div>
+                            <div id="num" class="small text-danger d-flex align-items-center gap-2">
+                                <i class="bi bi-x-circle-fill"></i> Almeno un numero
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+                        <label class="form-check-label text-secondary" for="rememberMe">
+                            Ricordami su questo dispositivo
+                        </label>
+                    </div>
+
+                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary fw-bold bg-gradient" type="submit">
+                        Accedi
+                    </button>
+
+                    <hr class="my-4">
+
+                    <div class="text-center mb-3">
+                        <small class="text-body-secondary">
+                            Non hai un account? <a id="redirectR" class="text-primary text-decoration-none fw-bold ms-1"
+                                style="cursor:pointer;">Registrati</a>
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

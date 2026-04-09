@@ -1,0 +1,44 @@
+<div id='video-container' class='position-relative' style='width: 100%; background: #000; overflow: hidden;'>
+    <video id='video' style='width:100%; display:block; background:#000;'></video>
+
+    <div id="series-overlay"
+        class="position-absolute top-0 end-0 h-100 bg-dark bg-opacity-90 text-white p-3 shadow-lg d-none"
+        style="width: 350px; z-index: 10; overflow-y: auto; transition: all 0.3s ease;">
+        <div class="d-flex justify-content-between align-items-center mb-3 border-bottom border-secondary pb-2">
+            <h6 class="m-0 uppercase fw-bold text-info">Navigazione Serie</h6>
+            <button id="close-series-menu" class="btn btn-sm text-white border-0"><i class="bi bi-x-lg"></i></button>
+        </div>
+
+        <label class="small text-secondary mb-1">Cambia Stagione:</label>
+        <select id="season-selector"
+            class="form-select form-select-sm bg-dark text-white border-secondary mb-3 shadow-none">
+        </select>
+
+        <div id="episodes-list" class="list-group list-group-flush border-top border-secondary">
+        </div>
+    </div>
+
+    <div id='video-controls' class='w-100 p-2 bg-dark bg-opacity-75 d-flex align-items-center gap-2 text-white'>
+        <button id='play-pause' class='btn btn-sm text-white border-0'><i class='bi bi-pause-fill'></i></button>
+
+        <button id='next-episode' class='btn btn-sm text-white border-0' title="Prossimo Episodio">
+            <i class="bi bi-skip-forward-fill"></i>
+        </button>
+
+        <span id='current-time' style='font-size: 0.8rem; min-width: 45px;'>0:00</span>
+        <input type='range' id='seek-bar' class='form-range flex-grow-1' value='0' step='0.1'>
+        <span id='total-time' style='font-size: 0.8rem; min-width: 45px;'>0:00</span>
+
+        <button id='open-series-menu' class='btn btn-sm text-white border-0' title="Stagioni ed Episodi">
+            <i class="bi bi-layers-half"></i>
+        </button>
+
+        <div class='position-relative d-inline-flex flex-column align-items-center gap-1'>
+            <input type='range' id='volume-bar' class='form-range d-none position-absolute p-0 m-0 ' min='0' max='1' step='0.1' value='1'>
+            <button id='mute-btn' class='btn btn-sm text-white border-0 p-0'><i
+                    class='bi bi-volume-up-fill'></i></button>
+        </div>
+
+        <button id='full-screen' class='btn btn-sm text-white border-0'><i class='bi bi-fullscreen'></i></button>
+    </div>
+</div>

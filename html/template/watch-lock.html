@@ -1,0 +1,21 @@
+<div id="watch-lock"
+    class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-95 d-flex align-items-center justify-content-center"
+    style="z-index: 9999;">
+    <div class="text-center p-4 border border-info rounded shadow-lg bg-black w-100"
+        style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+        <h2 class="text-info mb-1">Video Player</h2>
+        <h6 id="titolo" class="text-muted mb-3"></h6>
+
+        <div id="video-content-area"
+            class="my-4 p-3 border border-secondary rounded bg-dark min-vh-50 d-flex flex-column align-items-center justify-content-center">
+            <div class="text-info spinner-border" role="status"></div>
+            <p class="mt-2">Caricamento Captcha...</p>
+        </div>
+
+        <div class="d-flex justify-content-center gap-2">
+            <button id="btn-visto" class="btn btn-success bg-gradient"><i class="bi bi-check-circle"></i> Visto</button>
+            <button id="btn-corso" class="btn btn-warning text-dark bg-gradient"><i class="bi bi-hourglass-split"></i> In corso</button>
+            <button id="btn-annulla" class="btn btn-outline-danger bg-gradient"><i class="bi bi-x-circle"></i> Chiudi</button>
+        </div>
+    </div>
+</div>

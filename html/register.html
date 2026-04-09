@@ -1,0 +1,68 @@
+<div class="modal fade" id="modalRegister" tabindex="-1" aria-labelledby="modalRegisterLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-4 shadow border-0">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h1 class="fw-bold mb-0 fs-2" id="modalRegisterLabel">Registrati gratis</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+            </div>
+
+            <div class="modal-body p-5 pt-0">
+                <form id="registerForm">
+                    <p class="text-secondary mb-4">È facile e veloce.</p>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-3" id="regName" placeholder="Mario Rossi"
+                            required>
+                        <label for="regName">Nome Completo</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control rounded-3" id="regEmail" placeholder="nome@esempio.it"
+                            required>
+                        <label for="regEmail">Indirizzo email</label>
+                    </div>
+                    <div class="input-group mb-3 has-validation">
+                        <div class="form-floating">
+                            <input type="password" class="form-control rounded-start-3" id="regPassword"
+                                placeholder="Password" required>
+                            <label for="regPassword">Password</label>
+                        </div>
+                        <span class="input-group-text rounded-end-3 bg-dark border-start-0" id="togglePasswordR" style="cursor: pointer;">
+                            <i class="bi bi-eye-fill"></i>
+                        </span>
+                    </div>
+                    
+                    <div class="p-3 mb-4 rounded-3 border">
+                        <div class="d-flex flex-column gap-2">
+                            <div id="len" class="small text-danger d-flex align-items-center gap-2">
+                                <i class="bi bi-x-circle-fill"></i> Almeno 8 caratteri
+                            </div>
+                            <div id="cap" class="small text-danger d-flex align-items-center gap-2">
+                                <i class="bi bi-x-circle-fill"></i> Una lettera maiuscola
+                            </div>
+                            <div id="num" class="small text-danger d-flex align-items-center gap-2">
+                                <i class="bi bi-x-circle-fill"></i> Almeno un numero
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="w-100 mb-3 btn btn-lg rounded-3 btn-primary fw-bold bg-gradient" type="submit">Crea
+                        account</button>
+
+                    <p class="small text-body-secondary text-center mb-4">
+                        Cliccando su Crea account, accetti i nostri <a href="#" class="text-decoration-none">Termini di
+                            Servizio</a> e l' <a href="#" class="text-decoration-none">Informativa sulla Privacy</a>.
+                    </p>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <span class="text-muted">Hai già un account?</span>
+                        <a class="fw-bold text-decoration-none text-primary ms-1" id="redirectL"
+                            style="cursor:pointer;">Accedi</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

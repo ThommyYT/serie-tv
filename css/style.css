@@ -1,0 +1,506 @@
+/* 1. Target universale per tutti gli elementi con scroll */
+::-webkit-scrollbar {
+    width: 8px;
+    /* Larghezza barra verticale */
+    height: 8px;
+    /* Altezza barra orizzontale */
+    background: #121212;
+    /* Sfondo della traccia (scuro come il tuo sito) */
+}
+
+/* 2. La "maniglia" (quella che trascini) */
+::-webkit-scrollbar-thumb {
+    background: #0d6efd;
+    /* Colore primario (il tuo blu Bootstrap) */
+    border-radius: 10px;
+    /* Arrotondamento totale */
+    border: 2px solid #121212;
+    /* Crea un effetto distanziatore dallo sfondo */
+}
+
+/* 3. Effetto al passaggio del mouse sulla maniglia */
+::-webkit-scrollbar-thumb:hover {
+    background: #0a58ca;
+    /* Blu leggermente più scuro */
+    cursor: pointer;
+}
+
+/* 4. La traccia (lo spazio dietro la maniglia) */
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    /* Leggermente più chiaro del background body */
+    border-radius: 10px;
+}
+
+/* --- Supporto per Firefox (che usa una sintassi diversa) --- */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #0d6efd #121212;
+}
+
+/* Impedisce al contenuto di finire dietro il footer fisso */
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* 2. Hero Section: Altezza esatta */
+.wrapper {
+    position: relative;
+    height: calc(100vh - (73px * 2 + 36.5px));
+    width: 100vw;
+    overflow: hidden auto;
+    scrollbar-gutter: stable;
+    background-color: transparent;
+    z-index: 1;
+}
+
+/* .hero-wrapper {
+    overflow: hidden !important;
+} */
+
+/* 1. Il contenitore della Card (#hero) - Confermato */
+#hero {
+    position: relative;
+    height: calc(100vh - (73px * 2 + 36.5px));
+    padding: 0;
+    overflow: hidden !important;
+    /* Ritaglia l'iframe eccedente, fondamentale per rounded-4 */
+    z-index: 1;
+}
+
+/* 2. Il contenitore del video (Sfondo) - Confermato */
+.video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    /* I click passano attraverso al video e vanno ai testi/pulsanti */
+    overflow: hidden;
+    /* Sicurezza extra per il ritaglio */
+}
+
+/* 3. L'Iframe di YouTube - IL TRUCCO È QUI */
+#hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    /* Calcoliamo le dimensioni basandoci sulle unità di viewport (vw/vh) 
+       per simulare un background-size: cover.
+       Usiamo 115vw/vh per avere un margine extra di sicurezza ed eliminare 
+       al 100% qualsiasi riga nera residua di YouTube */
+    width: 115vw;
+    height: 115vh;
+
+    /* Forziamo le proporzioni minime basate sul 16:9 originale del video.
+       Questo impedisce che il video si "schiacci" su schermi molto verticali o orizzontali */
+    min-width: 177.77vh;
+    /* (16 / 9) * 100vh */
+    min-height: 56.25vw;
+    /* (9 / 16) * 100vw */
+
+    /* Centriamo l'iframe perfetto rispetto al contenitore padre #hero */
+    transform: translate(-50%, -50%);
+}
+
+/* 4. L'overlay sopra al video - Confermato e migliorato */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    /* Un gradiente più scuro ai lati aiuta la lettura e dà un feeling più premium */
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.7) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 3. Video YouTube Full-Cover */
+/* .video-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    z-index: 1;
+} */
+
+/* .video-container #hero-video {
+    Mantiene il 16:9 coprendo l'area calcolata
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    Non intercetta i click
+} */
+
+/* 4. Overlay e Testi */
+/* .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    Lascia passare i click ai pulsanti sotto
+} */
+
+/* .hero-overlay * {
+    pointer-events: auto;
+    Riabilita i click solo sui testi/pulsanti interni
+} */
+
+.update-wrapper .row {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    width: 100%;
+    transform: translate(-50%, -50%);
+}
+
+.site-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    z-index: 1;
+}
+
+.site-container #site-frame {
+    width: 100%;
+    height: 100%;
+    /* min-width: 100%;
+    min-height: 100%; */
+    background-color: transparent;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.position-fixed {
+    z-index: 2000 !important;
+}
+
+
+/* Fix per il pulsante To-Top: usa bottom invece di top calc */
+#to-top {
+    bottom: 20px;
+    right: 20px;
+    top: auto !important;
+    display: none !important;
+    /* Sovrascrive il tuo vecchio calcolo */
+}
+
+/* #to-top {
+    top: calc(100vh - (73px + 36.5px));
+} */
+
+.btn-giorno {
+    transition: transform 0.2s, hover 0.2s;
+}
+
+.btn-giorno:hover {
+    transform: translateY(-3px);
+}
+
+.status-badge {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.35em 0.65em;
+    vertical-align: middle;
+    transition: all 0.2s ease-in-out;
+}
+
+#watch-lock {
+    backdrop-filter: blur(10px);
+    /* Sfoca il contenuto sotto il blocco */
+    transition: opacity 0.3s ease;
+}
+
+/* Effetto hover per le locandine */
+.transition-transform {
+    transition: transform 0.2s ease-in-out;
+}
+
+.transition-transform:hover {
+    transform: scale(1.05);
+}
+
+.card-title {
+    font-weight: 600;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* Quando il container ha la classe fullscreen-active, applica gli stili */
+#video-container.fullscreen-active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centra il video verticalmente se non è in 16:9 */
+    background-color: black;
+    overflow: hidden !important;
+    /* Impedisce scrollbar fantasma che muovono il mouse */
+    width: 100% !important;
+    height: 100% !important;
+}
+
+#video-container.fullscreen-active #video {
+    height: 100vh !important;
+    width: 100vw !important;
+    opacity: 1 !important;
+    background-color: transparent !important;
+    /* max-height: 100vh; opzionale, a seconda delle preferenze */
+}
+
+/* Stile speciale per i controlli in fullscreen */
+#video-container.fullscreen-active #video-controls {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 2147483647 !important;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5), transparent) !important;
+    padding-bottom: 20px !important;
+    /* Un po' di respiro in fondo in fullscreen */
+}
+
+#video-controls {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+/* Classe per nascondere i controlli senza rimuovere il flex */
+.controls-hidden {
+    opacity: 0 !important;
+    pointer-events: none;
+    /* Impedisce di cliccare i tasti quando sono invisibili */
+}
+
+#search-form {
+    width: auto;
+}
+
+#search-input {
+    width: 12.5vw;
+    border-top-left-radius: 50rem;
+    border-bottom-left-radius: 50rem;
+}
+
+#search-btn {
+    border-top-right-radius: 50rem;
+    border-bottom-right-radius: 50rem;
+}
+
+/* .volume-container {
+    position: relative;
+    width: fit-content;
+} */
+
+#volume-bar {
+    /* Rende la barra verticale */
+    -webkit-appearance: slider-vertical;
+    appearance: slider-vertical;
+    /* Supporto moderno browser */
+    width: 15px;   /* Larghezza totale dell'area cliccabile */
+    height: 100px; /* Altezza della barra */
+
+    cursor: pointer;
+
+    /* Posizionamento sopra il tasto */
+    bottom: 35px;
+    /* Inizia esattamente sopra il bottone */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    /* Distanza dal pulsante */
+}
+
+/* Fix per browser che non supportano bene slider-vertical */
+@supports not (appearance: slider-vertical) {
+    #volume-bar {
+        writing-mode: bt-lr;
+        /* Bottom to Top */
+    }
+}
+
+#video-container:fullscreen,
+#video-container:-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+}
+
+#video-container:fullscreen video,
+#video-container:-webkit-full-screen video {
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        height: calc(100vh - (163.5px + 73px + 36.5px));
+    }
+
+    .nav-text {
+        display: none;
+    }
+
+    #search-form:not(.search-expanded) #search-input {
+        display: none;
+    }
+
+    #search-form:not(.search-expanded) #search-btn {
+        border-radius: 50rem !important;
+    }
+
+    #search-form.search-expanded {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        z-index: 1050;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        border-radius: 50rem;
+        /* animation: fadeIn 0.3s ease; */
+    }
+
+    #search-form.search-expanded #search-input {
+        display: block;
+        /* width:  !important; */
+        width: calc(100vw - 52px) !important;
+        /* animation: fadeIn 0.3s ease; */
+    }
+}
+
+/* Pagination - hover solo sul numero */
+
+.pagination .btn-pagination {
+    transition: color 0.2s ease;
+}
+
+.pagination .btn-pagination:hover {
+    color: var(--bs-info-text-emphasis) !important;
+    transform: translateY(-2px);
+}
+
+.pagination .page-link:focus-visible {
+    outline: 2px solid rgba(13, 202, 240, 0.65); /* bs-info with alpha */
+    outline-offset: 2px;
+    border-radius: 999px;
+}
+
+#navAccount > ul > li > a {
+    cursor: pointer;
+}
+
+#navAccount > ul > li:hover > a {
+    color: var(--bs-secondary-text-emphasis) !important;
+}
+
+
+#account:hover a {
+    color: var(--bs-secondary-text-emphasis) !important;
+}
+
+#account:hover .dropdown-menu {
+    display: block;
+}
+
+.dots .page-link {
+    cursor: pointer;
+}
+
+/* #form-pagination{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+/* --- DESKTOP VIEW (> 767px) --- */
+/* .search-nav-item {
+    min-width: 200px;
+    transition: all 0.3s ease;
+}
+
+#search-input {
+    border-top-left-radius: 50rem;
+    border-bottom-left-radius: 50rem;
+}
+
+#search-btn {
+    border-top-right-radius: 50rem;
+    border-bottom-right-radius: 50rem;
+} 
+*/
+
+/* --- MOBILE VIEW (<= 767px) --- */
+/* @media screen and (max-width: 767px) {
+    .wrapper {
+        height: calc(100vh - (163.5px + 73px + 36.5px));
+    }
+
+    .nav-text {
+        display: none;
+    }
+
+    Reset min-width per mobile
+    .search-nav-item {
+        min-width: auto; 
+    }
+
+    Stato di default su mobile: input nascosto
+    #search-form:not(.search-expanded) #search-input {
+        display: none;
+    }
+
+    Quando l'input è nascosto, il bottone deve essere tondo su tutti i lati
+    #search-form:not(.search-expanded) #search-btn {
+        border-radius: 50rem !important; 
+    }
+
+    --- EFFETTO DI ESPANSIONE ---
+    #search-form.search-expanded {
+        position: absolute;
+        top: 10px; Adattalo in base all'altezza della tua navbar
+        right: 10px;
+        left: 10px; Lo fa espandere su tutta la larghezza
+        z-index: 1050; Lo fa sovrapporre agli altri elementi
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        border-radius: 50rem;
+    }
+
+    #search-form.search-expanded #search-input {
+        display: block;
+        width: 100%;
+        animation: fadeIn 0.3s ease;
+    }
+}
+
+Piccola animazione fluida per la comparsa
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+} */

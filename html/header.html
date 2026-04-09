@@ -1,0 +1,81 @@
+<!-- 1. LOGO -->
+<div class="col-md-auto">
+    <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none align-items-center">
+        <img src="./img/serie_tv_detailed.ico" class="me-2" alt="logo" width="32" height="32">
+        <span class="fs-4 fw-bold">Serie TV</span>
+    </a>
+</div>
+
+<!-- 2. NAVIGAZIONE CENTRALE E SEARCH -->
+<div class="col-md-auto flex-grow-1">
+    <ul class="nav justify-content-center gap-2 align-items-center">
+        <li class="nav-item">
+            <a href="javascript:void(0)" id="btn-home"
+                class="btn btn-outline-primary shadow-sm rounded-pill bg-gradient">
+                <i class="bi bi-house-fill"></i><span class="nav-text"> HOME</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="javascript:void(0)" id="btn-archivio"
+                class="btn btn-outline-primary shadow-sm rounded-pill bg-gradient">
+                <i class="bi bi-archive-fill"></i><span class="nav-text"> ARCHIVIO</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="javascript:void(0)" id="btn-aggiornamento"
+                class="btn btn-outline-primary shadow-sm rounded-pill bg-gradient">
+                <i class="bi bi-arrow-repeat"></i><span class="nav-text"> AGGIORNAMENTO EPISODI</span>
+            </a>
+        </li>
+        <!-- SEARCH BAR con larghezza fissa per evitare il salto di riga -->
+        <li class="nav-item">
+            <form id="search-form" class="input-group input-group-sm">
+                <input type="search" list="search-suggestions" id="search-input" name="s" class="form-control bg-dark text-white border-primary"
+                    placeholder="Cerca...">
+                <datalist id="search-suggestions">
+                    <!-- Questi verranno popolati dinamicamente -->
+                </datalist>
+                <button class="btn btn-primary bg-gradient" id="search-btn" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+        </li>
+        <!-- <li class="nav-item search-nav-item">
+            <form id="search-form" class="input-group input-group-sm">
+                <input type="search" id="search-input" name="s" class="form-control bg-dark text-white border-primary"
+                    placeholder="Cerca...">
+                <button class="btn btn-primary" id="search-btn" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+        </li> -->
+    </ul>
+</div>
+
+<!-- 3. ACCOUNT & LOGIN -->
+<div class="col-md-auto">
+    <div class="d-flex align-items-center gap-3">
+        <div id="navAccount">
+            <ul class="nav gap-2">
+                <li class="nav-item dropdown" id="account">
+                    <a class="text-secondary" href="#" data-page="account">
+                        <i class="bi bi-person-circle fs-3"></i>
+                    </a>
+
+                    <div class="dropdown-menu mt-0">
+                        <a class="dropdown-item" href="#" data-page="logout">Logout</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="text-secondary" href="#" data-page="listSeries">
+                        <i class="bi bi-bookmarks-fill fs-3"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="RegisterLogin" class="d-flex gap-2">
+            <button type="button" class="btn btn-sm btn-outline-primary bg-gradient" id="buttonLogin">Login</button>
+            <button type="button" class="btn btn-sm btn-primary bg-gradient" id="buttonRegister">Register</button>
+        </div>
+    </div>
+</div>
