@@ -1,10 +1,20 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "name": "SerieTV",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      
-    }
+    "ghcr.io/devcontainers/features/php:1": {
+      "version": "latest",
+      "installComposer": true
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
+  "forwardPorts": [8000, 3306, 8191],
+  "postCreateCommand": "composer install && npm install",
   "customizations": {
     "vscode": {
       "extensions": [

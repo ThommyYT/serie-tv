@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/universal:2
+    volumes:
+      - ..:/workspaces/${localWorkspaceFolderBasename}:cached
+    network_mode: service:db # Permette all'app di vedere il DB come 'localhost'
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: serietv_streaming
+    ports:
+      - "3306:3306"
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+    ports:
+      - "8191:8191"
+    restart: unless-stopped
