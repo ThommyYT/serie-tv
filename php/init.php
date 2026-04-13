@@ -2,7 +2,18 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/functions.php';
+
+$required_dirs = [__DIR__ . '/tmp', __DIR__ . '/logs'];
+foreach ($required_dirs as $dir) {
+    if (!is_dir($dir)) {
+        if (!mkdir($dir, 0777, true)) {
+            die("Errore: Impossibile creare la cartella $dir. Verifica i permessi.");
+        }
+    }
+}
+
 session_start();
+
 
 use \classes\Data;
 use \classes\Database;

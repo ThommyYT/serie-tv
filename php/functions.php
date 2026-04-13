@@ -14,15 +14,17 @@
  */
 function url_exists($url, $cache_seconds = 30): bool
 {
-    $tempDir = sys_get_temp_dir();
-    $cache_file = "";
+    // $tempDir = sys_get_temp_dir();
+    $tempDir = __DIR__ . '/tmp';
+    $sep = DIRECTORY_SEPARATOR;
+    
     if (str_contains($url, 'nuovo-indirizzo')) {
         $tmp = md5("indirizzoNuovo");
-        $cache_file = "$tempDir\url_check_$tmp.txt";
     } else {
         $tmp = md5("eurostreaming");
-        $cache_file = "$tempDir\url_check_$tmp.txt";
     }
+
+    $cache_file = "$tempDir{$sep}url_check_$tmp.txt";
 
     file_put_contents(__DIR__ . '/logs/logFunctions.log',  date('Y-m-d H:i:s') .  " url_exists: " . $url . " - " . $cache_file . PHP_EOL, FILE_APPEND);
 
@@ -176,7 +178,7 @@ function verifyDomain(): bool
 
         // Dividiamo il dominio (es: eurostreaming.red -> ['eurostreaming', 'red'])
         $parts = explode(".", $text);
-        
+
         if (count($parts) < 2) {
             file_put_contents(__DIR__ . '/logs/logFunctions.log',  date('Y-m-d H:i:s') . " Formato dominio non valido: " . $text . PHP_EOL, FILE_APPEND);
             // println("Formato dominio non valido: " . $text);
@@ -211,10 +213,12 @@ function slugify(string $text): string
 }
 
 
-function generateToken(): string {
+function generateToken(): string
+{
     return bin2hex(random_bytes(32)); // 256 bit
 }
 
-function generateCode() {
+function generateCode()
+{
     return random_int(100000, 999999); // 6 cifre
 }

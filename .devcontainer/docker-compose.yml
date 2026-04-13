@@ -1,19 +1,14 @@
-version: '3.8'
 services:
   app:
-    image: mcr.microsoft.com/devcontainers/universal:2
-    volumes:
-      - ..:/workspaces/${localWorkspaceFolderBasename}:cached
-    network_mode: service:db # Permette all'app di vedere il DB come 'localhost'
-
-  db:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: serietv_streaming
+    image: tomsik68/xampp:latest
+    container_name: xampp-server
     ports:
-      - "3306:3306"
+      - "80:80"   # Apache (Sito)
+      - "3306:3306" # MySQL
+    volumes:
+      # Monta i tuoi file dalla cartella principale del progetto alla cartella www di XAMPP
+      - ..:/www  # Monta la root del tuo progetto Codespaces in /www
+    restart: always
 
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest

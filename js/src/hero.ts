@@ -29,6 +29,8 @@ const createPlayer = () => {
             'iv_load_policy': 3,
             'enablejsapi': 1,
             // Rimuovi 'origin' se sei su localhost e vedi errori
+            'origin': window.location.origin, // Fondamentale per Codespaces
+            // 'widget_referrer': window.location.origin,
         },
         events: {
             'onReady': (event) => {
@@ -37,7 +39,7 @@ const createPlayer = () => {
                 // Se vuoi l'effetto "cinetico", tieni il 2x, 
                 // altrimenti 1.5x è un buon compromesso.
                 event.target.setPlaybackQuality('hd1080');
-                event.target.setPlaybackRate(3); 
+                event.target.setPlaybackRate(3);
             },
             'onStateChange': (event) => {
                 if (event.data === YT.PlayerState.ENDED) {

@@ -1,25 +1,24 @@
 {
   "name": "SerieTV",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "app",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  "features": {
-    "ghcr.io/devcontainers/features/php:1": {
-      "version": "latest",
-      "installComposer": true
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "latest"
-    },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-  },
-  "forwardPorts": [8000, 3306, 8191],
-  "postCreateCommand": "composer install && npm install",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
   "customizations": {
     "vscode": {
       "extensions": [
-        "MS-CEINTL.vscode-language-pack-it"
+        "MS-CEINTL.vscode-language-pack-it",
+        "ms-azuretools.vscode-containers",
+        "bmewburn.vscode-intelephense-client",
+        "dbaeumer.vscode-eslint",
+        "pranaygp.vscode-css-peek"
       ]
     }
-  }
+  },
+  "forwardPorts": [80],
+  "portsAttributes": {
+    "80": {
+      "label": "Web Server XAMPP",
+      "visibility": "public" // Rende la porta pubblica in automatico
+    }
+  },
+  // Questo avvia il container di FlareSolverr separatamente appena il Codespace è pronto
+  "postCreateCommand": "bash setup.sh"
 }
