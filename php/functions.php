@@ -12,12 +12,12 @@
  *
  * @return bool True se l'URL esiste, false altrimenti.
  */
-function url_exists($url, $cache_seconds = 30): bool
+function url_exists($url, $cache_seconds = 3600)
 {
     // $tempDir = sys_get_temp_dir();
     $tempDir = __DIR__ . '/tmp';
     $sep = DIRECTORY_SEPARATOR;
-    
+
     if (str_contains($url, 'nuovo-indirizzo')) {
         $tmp = md5("indirizzoNuovo");
     } else {
@@ -33,22 +33,38 @@ function url_exists($url, $cache_seconds = 30): bool
         return true;
     }
 
-    // 2. Se la cache è scaduta, facciamo il controllo reale con cURL
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_NOBODY, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+    // 2. Chiamata a FlareSolverr
+    $ch = curl_init("http://flaresolverr:8191/v1");
 
-    curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    unset($ch);
+    // Prepariamo il payload JSON per FlareSolverr
+    $data = json_encode([
+        "cmd" => "request.get",
+        "url" => $url,
+        "maxTimeout" => 60000
+    ]);
 
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_POSTFIELDS => $data,
+        CURLOPT_TIMEOUT => 30 // FlareSolverr può metterci un po' a risolvere Cloudflare
+    ]);
+
+    $response = curl_exec($ch);
+    $error = curl_error($ch);
+
+    if ($response === false) {
+        return false;
+    }
+
+    $resData = json_decode($response, true);
+
+    // FlareSolverr restituisce lo stato HTTP originale del sito dentro ['solution']['status']
+    $httpCode = $resData['solution']['status'] ?? 500;
     $exists = ($httpCode >= 200 && $httpCode < 400);
 
-    // 3. Salviamo il risultato nella cache se esiste gli mettiamo un timestamp
+    // 3. Cache Save
     if ($exists) {
         file_put_contents($cache_file, time());
     }
@@ -109,6 +125,7 @@ function initDomain()
     /** @var classes\Database $db */
     $db = $_SESSION['DB'];
     $defaultDomain = $db->getSetting('streaming_domain');
+    // $defaultDomain = "eurostreamings.quest";
 
     // Inizializziamo solo se non abbiamo già nulla in sessione
     if (!isset($_SESSION['recent_second_lvl_domain']) || empty($_SESSION['recent_second_lvl_domain'])) {
@@ -196,7 +213,8 @@ function verifyDomain(): bool
             /** @var classes\Database $db */
             $db = $_SESSION['DB'];
             // $db->saveSetting('streaming_domain', $_SESSION['second_lvl_domain'] . '.' . $_SESSION['top_lvl_domain']);
-            return $db->saveSetting('streaming_domain', $_SESSION['second_lvl_domain'] . '.' . $_SESSION['top_lvl_domain']);;
+            return $db->saveSetting('streaming_domain', $_SESSION['second_lvl_domain'] . '.' . $_SESSION['top_lvl_domain']);
+            // return true;
         }
     }
 

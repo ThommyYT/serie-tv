@@ -1,6 +1,6 @@
 import { initSiteLogic } from './site.js';
 
-export const initSearchLogic = async (response: ApiResponseSite) => {
+export const initSearchLogic = async (response: ApiResponseSiteSearch) => {
     const main = $("main");
     // if (response.status === 'success') {
     //     const templateWrapper: string = await $.get('./html/template/wrapper-cards.html');
@@ -79,11 +79,11 @@ export const initSearchLogic = async (response: ApiResponseSite) => {
     await siteLogicHTML(main, response, 'search');
 
     initSiteLogic((page: Number) => {
-        var search = $('#data-search').val()?.toString();
+        var search = response.search;
         if (search !== null && search !== undefined && search !== '') {
             main.empty().append(loadingElement);
             main.show();
-            $.post('./php/siteSearch.php', { p: page, s: search }, (response: ApiResponseSite) => {
+            $.post('./php/siteSearch.php', { p: page, s: search }, (response: ApiResponseSiteSearch) => {
                 main.fadeOut(600, () => {
                     main.empty();
                     // Chiamiamo la logica di inizializzazione/rendering passando i dati
@@ -97,23 +97,24 @@ export const initSearchLogic = async (response: ApiResponseSite) => {
             }, 'json').fail(() => {
                 console.error("Errore nel caricamento dati da: ./php/siteSearch.php");
             });
-        } else {
-            main.empty().append(loadingElement);
-            main.show();
-            $.post('./php/siteSearch.php', { p: page, s: '' }, (response: ApiResponseSite) => {
-                main.fadeOut(600, () => {
-                    main.empty();
-                    // Chiamiamo la logica di inizializzazione/rendering passando i dati
-                    initSearchLogic(response);
+        } 
+        // else {
+        //     main.empty().append(loadingElement);
+        //     main.show();
+        //     $.post('./php/siteSearch.php', { p: page, s: '' }, (response: ApiResponseSite) => {
+        //         main.fadeOut(600, () => {
+        //             main.empty();
+        //             // Chiamiamo la logica di inizializzazione/rendering passando i dati
+        //             initSearchLogic(response);
 
-                    // Mostriamo i risultati
-                    main.fadeIn(400);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+        //             // Mostriamo i risultati
+        //             main.fadeIn(400);
+        //             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                });
-            }, 'json').fail(() => {
-                console.error("Errore nel caricamento dati da: ./php/siteSearch.php");
-            });
-        }
+        //         });
+        //     }, 'json').fail(() => {
+        //         console.error("Errore nel caricamento dati da: ./php/siteSearch.php");
+        //     });
+        // }
     });
 };

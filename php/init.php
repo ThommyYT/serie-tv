@@ -14,7 +14,6 @@ foreach ($required_dirs as $dir) {
 
 session_start();
 
-
 use \classes\Data;
 use \classes\Database;
 
@@ -24,8 +23,14 @@ if (!isset($_SESSION['DB'])) $_SESSION['DB'] = new Database();
 
 // Inizializzazione FlareSolverr Session ID se non esiste
 
-initDomain();
+// $x = url_exists("https://eurostreamings.xyz", -1);
+// if ($x["exist"]){
+//     echo "Apposto";
+// } else {
+//     die("Code: {$x["code"]};{$_SESSION["BREAK_LINE"]}Exists: {$x["existStr"]};");
+// }
 
+initDomain();
 
 if (!verifyDomain()) {
     header('HTTP/1.1 404 Not Found');
@@ -42,51 +47,46 @@ if (!isset($_SESSION['id'])) $_SESSION['id'] = session_id();
 $ch = $_SESSION['app_data']->getCH();
 
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.list"]));
-$res = json_decode(curl_exec($ch), true);
+$response = curl_exec($ch);
+$res = json_decode($response, true);
+if (isset($res) && is_array($res) && isset($res['sessions']) && is_array($res['sessions'])) {
+    if (count($res['sessions']) > 0) {
+        if ($_SESSION['id'] != $res['sessions'][0]) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.destroy", "session" => $res['sessions'][0]]));
+            curl_exec($ch);
 
-if (count($res['sessions']) > 0) {
-    if ($_SESSION['id'] != $res['sessions'][0]) {
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.destroy", "session" => $res['sessions'][0]]));
-        curl_exec($ch);
-
+            // curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.create", "session" => $_SESSION['id']]));
+        }
+    } else {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.create", "session" => $_SESSION['id']]));
+        curl_exec($ch);
     }
-} else {
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.create", "session" => $_SESSION['id']]));
-    curl_exec($ch);
 }
 
 if (!isset($_SESSION['user'])) $_SESSION['user'] = 0;
 
 if (!isset($_SESSION['listSearch'])) {
-    // richiama il file php che costruisce la lista di ricerca in maniera asincrona senza ritorno di risposta mantenendo la sessione creata in precedenza quindi con i dati aggiornati
     session_write_close();
-    $phpPath = PHP_BINDIR . DIRECTORY_SEPARATOR . 'php.exe';
 
-    // 2. Se non esiste (ritorna C:\php\php.exe ma non c'è nulla), cerchiamolo nei posti comuni
-    if (!file_exists($phpPath)) {
-        $paths = [
-            'C:\xampp\php\php.exe',
-            'C:\wamp64\bin\php\php' . PHP_VERSION . '\php.exe',
-            'C:\laragon\bin\php\php' . PHP_VERSION . '\php.exe'
-        ];
-        foreach ($paths as $path) {
-            if (file_exists($path)) {
-                $phpPath = $path;
-                break;
-            }
-        }
-    }
+    // 1. In XAMPP su Linux l'eseguibile è quasi sempre in questo percorso
+    $phpPath = '/opt/lampp/bin/php';
 
-    // Verifica finale per te (rimuovi dopo il test)
+    // Fallback se non lo trova (percorso standard Linux)
     if (!file_exists($phpPath)) {
-        die("Errore: Impossibile trovare l'eseguibile php.exe. Percorso tentato: " . $phpPath);
+        $phpPath = 'php';
     }
 
     $scriptPath = __DIR__ . "/getSearchItems.php";
-    $comando = 'start /B "" "' . $phpPath . '" "' . $scriptPath . '" ' . $_SESSION['id'] . ' create';
-    // echo $comando . "\n";
-    pclose(popen($comando, "r"));
+    $sessionId = $_SESSION['id'];
+
+    /**
+     * Spiegazione comando Linux:
+     * > /dev/null 2>&1  => Redirige output ed errori nel nulla (evita blocchi)
+     * &                 => Mette il processo in background
+     */
+    $comando = "$phpPath $scriptPath " . escapeshellarg($sessionId) . " create > /dev/null 2>&1 &";
+
+    exec($comando);
 }
 
 // print_r($_SESSION);

@@ -57,6 +57,10 @@ declare global {
         id: string;
     }
 
+    interface ApiResponseSiteSearch extends ApiResponseSite {
+        search: string;
+    }
+
     interface ApiResponseVideo extends ApiResponse {
         video_src: string;
     }

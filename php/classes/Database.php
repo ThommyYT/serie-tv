@@ -154,6 +154,7 @@ class Database
     //         return false;
     //     }
     // }
+    
     /** @return array{status: string, user_id?: int, message?: string} */
     public function register($full_name, $email, $password_hash)
     {

@@ -26,10 +26,16 @@ docker exec xampp-server /opt/lampp/bin/htpasswd -b -c /opt/lampp/auth/.htpasswd
 # Protezione phpMyAdmin esistente
 docker exec xampp-server bash -c "echo '
 <Directory \"/opt/lampp/phpmyadmin\">
+    # Forza il server a dare priorità a queste regole
+    AllowOverride AuthConfig
     AuthType Basic
     AuthName \"Accesso Riservato - Inserisci Password\"
     AuthUserFile /opt/lampp/auth/.htpasswd
     Require valid-user
+    
+    # Sovrascrive eventuali permessi "granted" precedenti
+    Order allow,deny
+    Allow from all
 </Directory>' >> /opt/lampp/etc/httpd.conf"
 
 # Riavvio e installazione dipendenze
