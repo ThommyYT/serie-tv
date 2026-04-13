@@ -15,6 +15,9 @@ services:
     container_name: flaresolverr
     environment:
       - LOG_LEVEL=info
+      - BROWSER_TIMEOUT=20000 # Chiude il browser se la sfida ci mette troppo
+      - MAX_TIMEOUT=60000
+      - SHELL=/bin/bash
     ports:
       - "8191:8191"
     restart: always

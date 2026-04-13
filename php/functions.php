@@ -12,31 +12,20 @@
  *
  * @return bool True se l'URL esiste, false altrimenti.
  */
-function url_exists($url, $cache_seconds = 3600)
+function url_exists($url, $cache_seconds = 3600): bool
 {
-    // $tempDir = sys_get_temp_dir();
     $tempDir = __DIR__ . '/tmp';
     $sep = DIRECTORY_SEPARATOR;
-
-    if (str_contains($url, 'nuovo-indirizzo')) {
-        $tmp = md5("indirizzoNuovo");
-    } else {
-        $tmp = md5("eurostreaming");
-    }
-
+    $tmp = md5($url);
     $cache_file = "$tempDir{$sep}url_check_$tmp.txt";
 
-    file_put_contents(__DIR__ . '/logs/logFunctions.log',  date('Y-m-d H:i:s') .  " url_exists: " . $url . " - " . $cache_file . PHP_EOL, FILE_APPEND);
-
-    // 1. Controlliamo se la cache esiste ed è ancora valida
-    if (file_exists($cache_file) && (time() - file_get_contents($cache_file)) < $cache_seconds) {
-        return true;
+    // 1. Controllo cache (legge '1' o '0')
+    if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_seconds) {
+        return file_get_contents($cache_file) === '1';
     }
 
     // 2. Chiamata a FlareSolverr
     $ch = curl_init("http://flaresolverr:8191/v1");
-
-    // Prepariamo il payload JSON per FlareSolverr
     $data = json_encode([
         "cmd" => "request.get",
         "url" => $url,
@@ -48,26 +37,27 @@ function url_exists($url, $cache_seconds = 3600)
         CURLOPT_POST => true,
         CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
         CURLOPT_POSTFIELDS => $data,
-        CURLOPT_TIMEOUT => 30 // FlareSolverr può metterci un po' a risolvere Cloudflare
+        CURLOPT_TIMEOUT => 70 
     ]);
 
     $response = curl_exec($ch);
-    $error = curl_error($ch);
+    $http_curl_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    if ($response === false) {
-        return false;
+    if ($response === false || $http_curl_code !== 200) {
+        file_put_contents($cache_file, '0'); // Cache negativa per non intasare Docker
+        return false; 
     }
 
     $resData = json_decode($response, true);
+    $exists = false;
 
-    // FlareSolverr restituisce lo stato HTTP originale del sito dentro ['solution']['status']
-    $httpCode = $resData['solution']['status'] ?? 500;
-    $exists = ($httpCode >= 200 && $httpCode < 400);
-
-    // 3. Cache Save
-    if ($exists) {
-        file_put_contents($cache_file, time());
+    if (isset($resData['status']) && $resData['status'] === 'ok') {
+        $httpSiteCode = $resData['solution']['status'] ?? 500;
+        $exists = ($httpSiteCode >= 200 && $httpSiteCode < 400);
     }
+
+    // 3. Salvataggio cache
+    file_put_contents($cache_file, $exists ? '1' : '0');
 
     return $exists;
 }
