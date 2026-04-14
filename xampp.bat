@@ -1,4 +1,4 @@
 @echo off
-start xampp_start.lnk
+start /min xampp_start.lnk
 pause
-start xampp_stop.lnk
+start /min xampp_stop.lnk
