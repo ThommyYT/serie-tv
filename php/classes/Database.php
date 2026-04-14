@@ -40,7 +40,7 @@ class Database
             );
         } catch (PDOException $exception) {
             // Log degli errori come da linee guida operative
-            error_log(date('Y-m-d H:i:s') . " Errore di connessione devuser: " . $exception->getMessage() . PHP_EOL, 3, __DIR__ . '../logs/errorDB.log');
+            error_log(date('Y-m-d H:i:s') . " Errore di connessione devuser: " . $exception->getMessage() . PHP_EOL, 3, __DIR__ . '/../logs/errorDB.log');
             die("Errore di accesso al database.");
         }
         return $this->conn;

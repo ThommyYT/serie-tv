@@ -71,6 +71,10 @@ declare global {
         dataNavigation: Navigation[];
     }
 
+    interface ApiResponseSiteSearch extends ApiResponseSite {
+        search: string;
+    }
+
     interface ApiResponseUpdate extends ApiResponse {
         dataUpdates: GiornoData[];
     }

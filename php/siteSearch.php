@@ -11,7 +11,6 @@ $url = "https://" . $_SESSION['second_lvl_domain'] . "." . $_SESSION['top_lvl_do
 
 $classWrapper = 'search';
 
-
 // Eseguiamo lo scraping (site.php ora deve solo popolare $dataCards e $dataNavigation)
 include __DIR__ . '/site.php'; 
 
@@ -25,6 +24,7 @@ echo json_encode([
     'sectionTitle' => $sectionTitle ?? '',
     'dataCards' => $dataCards ?? [],
     'dataNavigation' => $dataNavigation ?? [],
+    'search' => urldecode($_POST["s"]),
     'status' => 'success'
 ]);
 exit; // Importante per non stampare altro

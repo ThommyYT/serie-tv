@@ -2,6 +2,16 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/functions.php';
+
+$required_dirs = [__DIR__ . '/tmp', __DIR__ . '/logs'];
+foreach ($required_dirs as $dir) {
+    if (!is_dir($dir)) {
+        if (!mkdir($dir, 0777, true)) {
+            die("Errore: Impossibile creare la cartella $dir. Verifica i permessi.");
+        }
+    }
+}
+
 session_start();
 
 use \classes\Data;
@@ -14,7 +24,6 @@ if (!isset($_SESSION['DB'])) $_SESSION['DB'] = new Database();
 // Inizializzazione FlareSolverr Session ID se non esiste
 
 initDomain();
-
 
 if (!verifyDomain()) {
     header('HTTP/1.1 404 Not Found');
@@ -31,18 +40,21 @@ if (!isset($_SESSION['id'])) $_SESSION['id'] = session_id();
 $ch = $_SESSION['app_data']->getCH();
 
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.list"]));
-$res = json_decode(curl_exec($ch), true);
-
-if (count($res['sessions']) > 0) {
-    if ($_SESSION['id'] != $res['sessions'][0]) {
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.destroy", "session" => $res['sessions'][0]]));
-        curl_exec($ch);
-
+$response = curl_exec($ch);
+$res = json_decode($response, true);
+if (isset($res) && is_array($res) && isset($res['sessions']) && is_array($res['sessions'])) {
+    if (count($res['sessions']) > 0) {
+        if ($_SESSION['id'] != $res['sessions'][0]) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.destroy", "session" => $res['sessions'][0]]));
+            curl_exec($ch);
+            
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.create", "session" => $_SESSION['id']]));
+            curl_exec($ch);
+        }
+    } else {
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.create", "session" => $_SESSION['id']]));
+        curl_exec($ch);
     }
-} else {
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["cmd" => "sessions.create", "session" => $_SESSION['id']]));
-    curl_exec($ch);
 }
 
 if (!isset($_SESSION['user'])) $_SESSION['user'] = 0;

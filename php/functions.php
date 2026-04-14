@@ -12,44 +12,52 @@
  *
  * @return bool True se l'URL esiste, false altrimenti.
  */
-function url_exists($url, $cache_seconds = 30): bool
+function url_exists($url, $cache_seconds = 3600): bool
 {
-    $tempDir = sys_get_temp_dir();
-    $cache_file = "";
-    if (str_contains($url, 'nuovo-indirizzo')) {
-        $tmp = md5("indirizzoNuovo");
-        $cache_file = "$tempDir\url_check_$tmp.txt";
-    } else {
-        $tmp = md5("eurostreaming");
-        $cache_file = "$tempDir\url_check_$tmp.txt";
+    $tempDir = __DIR__ . '/tmp';
+    $sep = DIRECTORY_SEPARATOR;
+    $tmp = md5($url);
+    $cache_file = "$tempDir{$sep}url_check_$tmp.txt";
+
+    // 1. Controllo cache (legge '1' o '0')
+    if (file_exists($cache_file) && (time() - filemtime($cache_file)) < $cache_seconds) {
+        return file_get_contents($cache_file) === '1';
     }
 
-    file_put_contents(__DIR__ . '/logs/logFunctions.log',  date('Y-m-d H:i:s') .  " url_exists: " . $url . " - " . $cache_file . PHP_EOL, FILE_APPEND);
+    // 2. Chiamata a FlareSolverr
+    $ch = curl_init("http://localhost:8191/v1");
+    $data = json_encode([
+        "cmd" => "request.get",
+        "url" => $url,
+        "maxTimeout" => 60000
+    ]);
 
-    // 1. Controlliamo se la cache esiste ed è ancora valida
-    if (file_exists($cache_file) && (time() - file_get_contents($cache_file)) < $cache_seconds) {
-        return true;
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_POSTFIELDS => $data,
+        CURLOPT_TIMEOUT => 70 
+    ]);
+
+    $response = curl_exec($ch);
+    $http_curl_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    if ($response === false || $http_curl_code !== 200) {
+        file_put_contents($cache_file, '0'); // Cache negativa per non intasare Docker
+        return false; 
     }
 
-    // 2. Se la cache è scaduta, facciamo il controllo reale con cURL
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_NOBODY, true);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+    $resData = json_decode($response, true);
+    $exists = false;
 
-    curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    unset($ch);
-
-    $exists = ($httpCode >= 200 && $httpCode < 400);
-
-    // 3. Salviamo il risultato nella cache se esiste gli mettiamo un timestamp
-    if ($exists) {
-        file_put_contents($cache_file, time());
+    if (isset($resData['status']) && $resData['status'] === 'ok') {
+        $httpSiteCode = $resData['solution']['status'] ?? 500;
+        $exists = ($httpSiteCode >= 200 && $httpSiteCode < 400);
     }
+
+    // 3. Salvataggio cache
+    file_put_contents($cache_file, $exists ? '1' : '0');
 
     return $exists;
 }
@@ -176,7 +184,7 @@ function verifyDomain(): bool
 
         // Dividiamo il dominio (es: eurostreaming.red -> ['eurostreaming', 'red'])
         $parts = explode(".", $text);
-        
+
         if (count($parts) < 2) {
             file_put_contents(__DIR__ . '/logs/logFunctions.log',  date('Y-m-d H:i:s') . " Formato dominio non valido: " . $text . PHP_EOL, FILE_APPEND);
             // println("Formato dominio non valido: " . $text);
@@ -194,7 +202,7 @@ function verifyDomain(): bool
             /** @var classes\Database $db */
             $db = $_SESSION['DB'];
             // $db->saveSetting('streaming_domain', $_SESSION['second_lvl_domain'] . '.' . $_SESSION['top_lvl_domain']);
-            return $db->saveSetting('streaming_domain', $_SESSION['second_lvl_domain'] . '.' . $_SESSION['top_lvl_domain']);;
+            return $db->saveSetting('streaming_domain', $_SESSION['second_lvl_domain'] . '.' . $_SESSION['top_lvl_domain']);
         }
     }
 
@@ -211,10 +219,12 @@ function slugify(string $text): string
 }
 
 
-function generateToken(): string {
+function generateToken(): string
+{
     return bin2hex(random_bytes(32)); // 256 bit
 }
 
-function generateCode() {
+function generateCode()
+{
     return random_int(100000, 999999); // 6 cifre
 }
