@@ -1,17 +1,25 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
             "label": "Node Task",
             "type": "shell",
             "command": "npm --prefix ./js run dev",
+            "isBackground": true,
+            "runOptions": { "runOn": "folderOpen" }
         },
         {
             "label": "Xampp Task",
             "type": "shell",
-            "command": "xampp.bat"
+            "command": "${workspaceFolder}/xampp.bat",
+            "runOptions": { "runOn": "folderOpen" }
+        },
+        {
+            "label": "FlareSolverr Task",
+            "type": "shell",
+            "command": "start /min flaresolverr.exe",
+            "runOptions": { "runOn": "folderOpen" }
         }
+
     ]
 }
