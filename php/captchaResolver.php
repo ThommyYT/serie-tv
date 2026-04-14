@@ -21,7 +21,11 @@ $_SESSION['url'] = $target_url;
 $payload_get = [
     "cmd" => "request.get",
     "url" => $target_url,
-    "session" => $session_id,
+    // "session" => $session_id,
+    "maxTimeout" => 120000, // Alza a 120 secondi
+    "proxy" => [
+        "url" => "socks5://172.18.0.1:9050"
+    ]
 ];
 
 $options = $app_data->getOptionsQP();

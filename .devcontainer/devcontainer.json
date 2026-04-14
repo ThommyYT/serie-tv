@@ -12,13 +12,13 @@
       ]
     }
   },
-  "forwardPorts": [80],
-  "portsAttributes": {
-    "80": {
-      "label": "Web Server XAMPP",
-      "visibility": "public" // Rende la porta pubblica in automatico
-    }
-  },
+  // "forwardPorts": [80],
+  // "portsAttributes": {
+  //   "80": {
+  //     "label": "Web Server XAMPP",
+  //     "visibility": "public" // Rende la porta pubblica in automatico
+  //   }
+  // },
   // Questo avvia il container di FlareSolverr separatamente appena il Codespace è pronto
   "postCreateCommand": "bash setup.sh"
 }

@@ -1,5 +1,7 @@
 <?php
+
 namespace classes;
+
 use \CurlHandle;
 
 class Data
@@ -107,6 +109,9 @@ class Data
             // Initialize the cURL handle
             $this->initCurl();
         }
+        // Aggiungi queste opzioni per vedere errori dettagliati
+        curl_setopt($this->ch, CURLOPT_VERBOSE, true);
+        curl_setopt($this->ch, CURLOPT_CONNECTTIMEOUT, 10);
         // Return the cURL handle
         return $this->ch;
     }
