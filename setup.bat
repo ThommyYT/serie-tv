@@ -42,6 +42,7 @@ if not exist "%TOOLS%\php" (
     echo extension=mbstring >> "%TOOLS%\php\php.ini"
     echo extension=openssl >> "%TOOLS%\php\php.ini"
     echo extension=pdo_mysql >> "%TOOLS%\php\php.ini"
+	echo extension=zip >> "%TOOLS%\php\php.ini"
 )
 call :normalize php
 
