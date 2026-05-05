@@ -1,3 +1,4 @@
+.env
 # Ignored files and directories
 tools/
 # JavaScript build directory
