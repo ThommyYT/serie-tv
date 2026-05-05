@@ -1,11 +1,9 @@
-version: '3.9'
-
 services:
   app:
     build: ./docker/php
     container_name: serie-tv-app
     volumes:
-      - .:/var/www/html
+        - .:/var/www/html
     depends_on:
       - db
 
@@ -31,7 +29,17 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./database/127_0_0_1.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./127_0_0_1.sql:/docker-entrypoint-initdb.d/init.sql
+     
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - TIMEZONE=Europe/Rome
+    ports:
+      - "8191:8191"
+    restart: unless-stopped
 
 volumes:
   db_data:
