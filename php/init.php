@@ -26,8 +26,8 @@ if (!isset($_SESSION['DB'])) $_SESSION['DB'] = new Database();
 initDomain();
 
 if (!verifyDomain()) {
-    header('HTTP/1.1 404 Not Found');
-    header('Status: 404 Not Found');
+    header('HTTP/1.1 500 Service not found');
+    header('Status: 500 Service not found');
     exit;
 }
 

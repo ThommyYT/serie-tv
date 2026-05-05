@@ -43,7 +43,7 @@ class Data
          *
          * @var CurlHandle $ch
          */
-        $this->ch = curl_init("http://localhost:8191/v1");
+        $this->ch = curl_init("http://flaresolverr:8191/v1");
         curl_setopt_array($this->ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,

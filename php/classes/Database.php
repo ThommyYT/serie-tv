@@ -7,10 +7,10 @@ use \PDOException;
 
 class Database
 {
-    private $host = "localhost";
+    private $host = "db";
     private $db_name = "serietv_streaming";
-    private $username = "devuser"; // Cambiato da root
-    private $password = "devpass"; // Inserisci la password di devuser
+    private $username = "root"; // Cambiato da root
+    private $password = "root"; // Inserisci la password di devuser
     public $conn;
 
     // Impedisce la serializzazione della connessione

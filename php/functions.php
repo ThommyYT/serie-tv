@@ -25,7 +25,7 @@ function url_exists($url, $cache_seconds = 3600): bool
     }
 
     // 2. Chiamata a FlareSolverr
-    $ch = curl_init("http://localhost:8191/v1");
+    $ch = curl_init("http://flaresolverr:8191/v1");
     $data = json_encode([
         "cmd" => "request.get",
         "url" => $url,
