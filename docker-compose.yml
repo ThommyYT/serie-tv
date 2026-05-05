@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  app:
+    build: ./docker/php
+    container_name: serie-tv-app
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  web:
+    image: nginx:alpine
+    container_name: serie-tv-nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: serie-tv-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: serietv_streaming
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/127_0_0_1.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:
